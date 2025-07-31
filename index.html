@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word Search</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    td {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: sans-serif;
+    }
+    .selected {
+      background-color: lightblue;
+    }
+    .found {
+      background-color: lightgreen;
+      text-decoration: line-through;
+    }
+    #word-list li.found-word {
+      color: gray;
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<body>
+  <h1>Word Search</h1>
+  <table id="grid">
+    <tr><td data-x="0" data-y="0">O</td><td data-x="1" data-y="0">E</td><td data-x="2" data-y="0">M</td><td data-x="3" data-y="0">I</td><td data-x="4" data-y="0">T</td><td data-x="5" data-y="0">N</td><td data-x="6" data-y="0">W</td><td data-x="7" data-y="0">O</td><td data-x="8" data-y="0">D</td><td data-x="9" data-y="0">U</td><td data-x="10" data-y="0">X</td><td data-x="11" data-y="0">N</td><td data-x="12" data-y="0">L</td><td data-x="13" data-y="0">T</td><td data-x="14" data-y="0">A</td></tr>
+<tr><td data-x="0" data-y="1">R</td><td data-x="1" data-y="1">Q</td><td data-x="2" data-y="1">Y</td><td data-x="3" data-y="1">E</td><td data-x="4" data-y="1">T</td><td data-x="5" data-y="1">V</td><td data-x="6" data-y="1">B</td><td data-x="7" data-y="1">X</td><td data-x="8" data-y="1">G</td><td data-x="9" data-y="1">A</td><td data-x="10" data-y="1">T</td><td data-x="11" data-y="1">I</td><td data-x="12" data-y="1">O</td><td data-x="13" data-y="1">T</td><td data-x="14" data-y="1">X</td></tr>
+<tr><td data-x="0" data-y="2">O</td><td data-x="1" data-y="2">H</td><td data-x="2" data-y="2">G</td><td data-x="3" data-y="2">R</td><td data-x="4" data-y="2">H</td><td data-x="5" data-y="2">Y</td><td data-x="6" data-y="2">M</td><td data-x="7" data-y="2">N</td><td data-x="8" data-y="2">R</td><td data-x="9" data-y="2">Q</td><td data-x="10" data-y="2">R</td><td data-x="11" data-y="2">S</td><td data-x="12" data-y="2">X</td><td data-x="13" data-y="2">S</td><td data-x="14" data-y="2">S</td></tr>
+<tr><td data-x="0" data-y="3">H</td><td data-x="1" data-y="3">E</td><td data-x="2" data-y="3">R</td><td data-x="3" data-y="3">E</td><td data-x="4" data-y="3">L</td><td data-x="5" data-y="3">U</td><td data-x="6" data-y="3">I</td><td data-x="7" data-y="3">S</td><td data-x="8" data-y="3">V</td><td data-x="9" data-y="3">I</td><td data-x="10" data-y="3">S</td><td data-x="11" data-y="3">T</td><td data-x="12" data-y="3">E</td><td data-x="13" data-y="3">H</td><td data-x="14" data-y="3">A</td></tr>
+<tr><td data-x="0" data-y="4">C</td><td data-x="1" data-y="4">P</td><td data-x="2" data-y="4">E</td><td data-x="3" data-y="4">S</td><td data-x="4" data-y="4">F</td><td data-x="5" data-y="4">E</td><td data-x="6" data-y="4">A</td><td data-x="7" data-y="4">Y</td><td data-x="8" data-y="4">Q</td><td data-x="9" data-y="4">O</td><td data-x="10" data-y="4">A</td><td data-x="11" data-y="4">D</td><td data-x="12" data-y="4">E</td><td data-x="13" data-y="4">R</td><td data-x="14" data-y="4">F</td></tr>
+<tr><td data-x="0" data-y="5">N</td><td data-x="1" data-y="5">S</td><td data-x="2" data-y="5">N</td><td data-x="3" data-y="5">I</td><td data-x="4" data-y="5">B</td><td data-x="5" data-y="5">Z</td><td data-x="6" data-y="5">N</td><td data-x="7" data-y="5">X</td><td data-x="8" data-y="5">A</td><td data-x="9" data-y="5">V</td><td data-x="10" data-y="5">T</td><td data-x="11" data-y="5">P</td><td data-x="12" data-y="5">X</td><td data-x="13" data-y="5">L</td><td data-x="14" data-y="5">E</td></tr>
+<tr><td data-x="0" data-y="6">A</td><td data-x="1" data-y="6">K</td><td data-x="2" data-y="6">E</td><td data-x="3" data-y="6">L</td><td data-x="4" data-y="6">X</td><td data-x="5" data-y="6">W</td><td data-x="6" data-y="6">A</td><td data-x="7" data-y="6">B</td><td data-x="8" data-y="6">O</td><td data-x="9" data-y="6">K</td><td data-x="10" data-y="6">T</td><td data-x="11" data-y="6">L</td><td data-x="12" data-y="6">E</td><td data-x="13" data-y="6">Y</td><td data-x="14" data-y="6">T</td></tr>
+<tr><td data-x="0" data-y="7">N</td><td data-x="1" data-y="7">N</td><td data-x="2" data-y="7">L</td><td data-x="3" data-y="7">I</td><td data-x="4" data-y="7">A</td><td data-x="5" data-y="7">C</td><td data-x="6" data-y="7">U</td><td data-x="7" data-y="7">S</td><td data-x="8" data-y="7">T</td><td data-x="9" data-y="7">O</td><td data-x="10" data-y="7">M</td><td data-x="11" data-y="7">E</td><td data-x="12" data-y="7">R</td><td data-x="13" data-y="7">R</td><td data-x="14" data-y="7">Y</td></tr>
+<tr><td data-x="0" data-y="8">D</td><td data-x="1" data-y="8">E</td><td data-x="2" data-y="8">K</td><td data-x="3" data-y="8">E</td><td data-x="4" data-y="8">R</td><td data-x="5" data-y="8">E</td><td data-x="6" data-y="8">S</td><td data-x="7" data-y="8">T</td><td data-x="8" data-y="8">R</td><td data-x="9" data-y="8">E</td><td data-x="10" data-y="8">N</td><td data-x="11" data-y="8">G</td><td data-x="12" data-y="8">T</td><td data-x="13" data-y="8">H</td><td data-x="14" data-y="8">S</td></tr>
+<tr><td data-x="0" data-y="9">W</td><td data-x="1" data-y="9">I</td><td data-x="2" data-y="9">O</td><td data-x="3" data-y="9">N</td><td data-x="4" data-y="9">Q</td><td data-x="5" data-y="9">T</td><td data-x="6" data-y="9">S</td><td data-x="7" data-y="9">U</td><td data-x="8" data-y="9">R</td><td data-x="9" data-y="9">T</td><td data-x="10" data-y="9">O</td><td data-x="11" data-y="9">P</td><td data-x="12" data-y="9">J</td><td data-x="13" data-y="9">B</td><td data-x="14" data-y="9">J</td></tr>
+<tr><td data-x="0" data-y="10">H</td><td data-x="1" data-y="10">S</td><td data-x="2" data-y="10">Q</td><td data-x="3" data-y="10">C</td><td data-x="4" data-y="10">E</td><td data-x="5" data-y="10">N</td><td data-x="6" data-y="10">G</td><td data-x="7" data-y="10">A</td><td data-x="8" data-y="10">G</td><td data-x="9" data-y="10">E</td><td data-x="10" data-y="10">M</td><td data-x="11" data-y="10">E</td><td data-x="12" data-y="10">N</td><td data-x="13" data-y="10">T</td><td data-x="14" data-y="10">L</td></tr>
+<tr><td data-x="0" data-y="11">C</td><td data-x="1" data-y="11">K</td><td data-x="2" data-y="11">R</td><td data-x="3" data-y="11">E</td><td data-x="4" data-y="11">V</td><td data-x="5" data-y="11">I</td><td data-x="6" data-y="11">T</td><td data-x="7" data-y="11">I</td><td data-x="8" data-y="11">S</td><td data-x="9" data-y="11">O</td><td data-x="10" data-y="11">P</td><td data-x="11" data-y="11">C</td><td data-x="12" data-y="11">Z</td><td data-x="13" data-y="11">G</td><td data-x="14" data-y="11">U</td></tr>
+<tr><td data-x="0" data-y="12">Y</td><td data-x="1" data-y="12">A</td><td data-x="2" data-y="12">U</td><td data-x="3" data-y="12">T</td><td data-x="4" data-y="12">H</td><td data-x="5" data-y="12">E</td><td data-x="6" data-y="12">N</td><td data-x="7" data-y="12">T</td><td data-x="8" data-y="12">I</td><td data-x="9" data-y="12">C</td><td data-x="10" data-y="12">I</td><td data-x="11" data-y="12">T</td><td data-x="12" data-y="12">Y</td><td data-x="13" data-y="12">U</td><td data-x="14" data-y="12">D</td></tr>
+<tr><td data-x="0" data-y="13">G</td><td data-x="1" data-y="13">V</td><td data-x="2" data-y="13">E</td><td data-x="3" data-y="13">C</td><td data-x="4" data-y="13">N</td><td data-x="5" data-y="13">A</td><td data-x="6" data-y="13">N</td><td data-x="7" data-y="13">E</td><td data-x="8" data-y="13">T</td><td data-x="9" data-y="13">N</td><td data-x="10" data-y="13">I</td><td data-x="11" data-y="13">A</td><td data-x="12" data-y="13">M</td><td data-x="13" data-y="13">S</td><td data-x="14" data-y="13">G</td></tr>
+<tr><td data-x="0" data-y="14">W</td><td data-x="1" data-y="14">F</td><td data-x="2" data-y="14">E</td><td data-x="3" data-y="14">E</td><td data-x="4" data-y="14">D</td><td data-x="5" data-y="14">B</td><td data-x="6" data-y="14">A</td><td data-x="7" data-y="14">C</td><td data-x="8" data-y="14">K</td><td data-x="9" data-y="14">E</td><td data-x="10" data-y="14">C</td><td data-x="11" data-y="14">X</td><td data-x="12" data-y="14">G</td><td data-x="13" data-y="14">H</td><td data-x="14" data-y="14">Q</td></tr>
+
+  </table>
+
+  <h2>Words to Find</h2>
+  <ul id="word-list">
+    <li>WELLBEING</li>
+<li>RESILIENCE</li>
+<li>TRUST</li>
+<li>REST</li>
+<li>STRENGTHS</li>
+<li>FEEDBACK</li>
+<li>ENGAGEMENT</li>
+<li>AUTHENTICITY</li>
+<li>SELFAWARENESS</li>
+<li>CUSTOMER</li>
+<li>POSITIVE</li>
+<li>REPAIR</li>
+<li>MAINTENANCE</li>
+<li>ANCHOR</li>
+<li>DOWNTIME</li>
+<li>BOUNDARIES</li>
+<li>SAFETY</li>
+<li>ACCOUNTABILITY</li>
+<li>ENERGY</li>
+  </ul>
+
+  <script>
+    const words = ['WELLBEING', 'RESILIENCE', 'TRUST', 'REST', 'STRENGTHS', 'FEEDBACK', 'ENGAGEMENT', 'AUTHENTICITY', 'SELFAWARENESS', 'CUSTOMER', 'POSITIVE', 'REPAIR', 'MAINTENANCE', 'ANCHOR', 'DOWNTIME', 'BOUNDARIES', 'SAFETY', 'ACCOUNTABILITY', 'ENERGY'];
+    const grid = document.getElementById('grid');
+    const wordList = document.getElementById('word-list');
+    let selected = [];
+
+    grid.addEventListener('click', function(e) {
+      if (e.target.tagName === 'TD') {
+        e.target.classList.toggle('selected');
+        const x = e.target.dataset.x;
+        const y = e.target.dataset.y;
+        const index = selected.findIndex(cell => cell.x === x && cell.y === y);
+        if (index > -1) {
+          selected.splice(index, 1);
+        } else {
+          selected.push({x, y, el: e.target});
+        }
+
+        if (selected.length > 1) {
+          const word = selected.map(cell => cell.el.textContent).join('');
+          const reverse = selected.map(cell => cell.el.textContent).reverse().join('');
+          const matchedWord = words.find(w => w === word || w === reverse);
+
+          if (matchedWord) {
+            selected.forEach(cell => cell.el.classList.add('found'));
+            highlightWordInList(matchedWord);
+            selected = [];
+          }
+        }
+      }
+    });
+
+    function highlightWordInList(word) {
+      const items = wordList.querySelectorAll('li');
+      items.forEach(item => {
+        if (item.textContent.toUpperCase() === word) {
+          item.classList.add('found-word');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
