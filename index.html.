@@ -2,42 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Word Search Game</title>
+  <title>Wellness Word Search</title>
   <style>
-    table { border-collapse: collapse; margin-bottom: 20px; }
+    table {
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
     td {
-      width: 30px; height: 30px; text-align: center;
-      border: 1px solid #ccc; cursor: pointer;
-      font-weight: bold; font-family: sans-serif;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: sans-serif;
       user-select: none;
     }
-    .selected { background-color: lightblue; }
-    .found { background-color: lightgreen; text-decoration: line-through; }
-    #word-list li.found-word { color: gray; text-decoration: line-through; }
+    .selected {
+      background-color: lightblue;
+    }
+    .found {
+      background-color: lightgreen;
+      text-decoration: line-through;
+    }
+    #word-list li.found-word {
+      color: gray;
+      text-decoration: line-through;
+    }
   </style>
 </head>
 <body>
-  <h1>Word Search</h1>
+  <h1>Wellness Word Search</h1>
   <table id="grid"></table>
   <h2>Words to Find</h2>
   <ul id="word-list">
+    <li>WELLBEING</li>
+    <li>RESILIENCE</li>
     <li>TRUST</li>
     <li>REST</li>
+    <li>STRENGTHS</li>
     <li>FEEDBACK</li>
     <li>ENGAGEMENT</li>
+    <li>AUTHENTICITY</li>
+    <li>SELFAWARENESS</li>
+    <li>CUSTOMER</li>
+    <li>POSITIVE</li>
+    <li>REPAIR</li>
+    <li>MAINTENANCE</li>
+    <li>ANCHOR</li>
+    <li>DOWNTIME</li>
+    <li>BOUNDARIES</li>
+    <li>SAFETY</li>
+    <li>ACCOUNTABILITY</li>
+    <li>ENERGY</li>
   </ul>
 
   <script>
-    // Example grid
+    // Example 15x15 grid (fill with your puzzle's actual letters as needed)
     const gridData = [
-      ['T','R','U','S','T','A','B','C'],
-      ['A','B','C','D','E','F','G','H'],
-      ['F','E','E','D','B','A','C','K'],
-      ['E','N','G','A','G','E','M','E'],
-      ['N','T','R','E','S','T','A','B'],
-      ['E','N','T','B','E','S','T','C'],
+      ['W','E','L','L','B','E','I','N','G','Z','R','E','S','T','A'],
+      ['O','X','T','R','U','S','T','P','Q','S','E','N','E','R','G'],
+      ['M','A','I','N','T','E','N','A','N','C','E','S','A','F','E'],
+      ['P','O','S','I','T','I','V','E','L','B','O','U','N','D','A'],
+      ['R','E','S','I','L','I','E','N','C','E','A','U','T','H','E'],
+      ['E','N','G','A','G','E','M','E','N','T','S','T','R','E','N'],
+      ['A','N','C','H','O','R','F','E','E','D','B','A','C','K','S'],
+      ['S','E','L','F','A','W','A','R','E','N','E','S','S','D','O'],
+      ['C','U','S','T','O','M','E','R','Q','U','R','A','I','R','P'],
+      ['B','O','U','N','D','A','R','I','E','S','R','E','P','A','I'],
+      ['D','O','W','N','T','I','M','E','S','T','R','E','N','G','T'],
+      ['S','T','R','E','N','G','T','H','S','A','F','E','T','Y','U'],
+      ['A','C','C','O','U','N','T','A','B','I','L','I','T','Y','V'],
+      ['E','N','E','R','G','Y','M','A','I','N','T','E','N','A','N'],
+      ['R','E','S','T','P','O','S','I','T','I','V','E','H','E','L']
     ];
-    const words = ['TRUST','REST','FEEDBACK','ENGAGEMENT'];
+    const words = [
+      'WELLBEING','RESILIENCE','TRUST','REST','STRENGTHS','FEEDBACK',
+      'ENGAGEMENT','AUTHENTICITY','SELFAWARENESS','CUSTOMER','POSITIVE',
+      'REPAIR','MAINTENANCE','ANCHOR','DOWNTIME','BOUNDARIES','SAFETY',
+      'ACCOUNTABILITY','ENERGY'
+    ];
     const grid = document.getElementById('grid');
     const wordList = document.getElementById('word-list');
     let selected = [];
@@ -71,18 +115,15 @@
 
         // Check if selected sequence forms a valid word
         if (selected.length > 1) {
-          // Order the selected cells as clicked
-          const word = selected.map(cell => cell.el.textContent).join('');
-          const reverse = selected.map(cell => cell.el.textContent).reverse().join('');
+          const word = selected.map(cell => cell.el.textContent).join('').toUpperCase();
+          const reverse = selected.map(cell => cell.el.textContent).reverse().join('').toUpperCase();
           const matchedWord = words.find(w => w === word || w === reverse);
 
           if (matchedWord) {
-            // Mark found in grid
             selected.forEach(cell => {
               cell.el.classList.add('found');
               cell.el.classList.remove('selected');
             });
-            // Cross off in list
             highlightWordInList(matchedWord);
           }
           selected.forEach(cell => cell.el.classList.remove('selected'));
