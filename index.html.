@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word Search Game</title>
+  <style>
+    table { border-collapse: collapse; margin-bottom: 20px; }
+    td {
+      width: 30px; height: 30px; text-align: center;
+      border: 1px solid #ccc; cursor: pointer;
+      font-weight: bold; font-family: sans-serif;
+      user-select: none;
+    }
+    .selected { background-color: lightblue; }
+    .found { background-color: lightgreen; text-decoration: line-through; }
+    #word-list li.found-word { color: gray; text-decoration: line-through; }
+  </style>
+</head>
+<body>
+  <h1>Word Search</h1>
+  <table id="grid"></table>
+  <h2>Words to Find</h2>
+  <ul id="word-list">
+    <li>TRUST</li>
+    <li>REST</li>
+    <li>FEEDBACK</li>
+    <li>ENGAGEMENT</li>
+  </ul>
+
+  <script>
+    // Example grid
+    const gridData = [
+      ['T','R','U','S','T','A','B','C'],
+      ['A','B','C','D','E','F','G','H'],
+      ['F','E','E','D','B','A','C','K'],
+      ['E','N','G','A','G','E','M','E'],
+      ['N','T','R','E','S','T','A','B'],
+      ['E','N','T','B','E','S','T','C'],
+    ];
+    const words = ['TRUST','REST','FEEDBACK','ENGAGEMENT'];
+    const grid = document.getElementById('grid');
+    const wordList = document.getElementById('word-list');
+    let selected = [];
+
+    // Render grid
+    grid.innerHTML = '';
+    gridData.forEach((row, y) => {
+      const tr = document.createElement('tr');
+      row.forEach((letter, x) => {
+        const td = document.createElement('td');
+        td.textContent = letter;
+        td.dataset.x = x;
+        td.dataset.y = y;
+        tr.appendChild(td);
+      });
+      grid.appendChild(tr);
+    });
+
+    // Handle cell click
+    grid.addEventListener('click', function(e) {
+      if (e.target.tagName === 'TD') {
+        e.target.classList.toggle('selected');
+        const x = e.target.dataset.x;
+        const y = e.target.dataset.y;
+        const index = selected.findIndex(cell => cell.x === x && cell.y === y);
+        if (index > -1) {
+          selected.splice(index, 1);
+        } else {
+          selected.push({x, y, el: e.target});
+        }
+
+        // Check if selected sequence forms a valid word
+        if (selected.length > 1) {
+          // Order the selected cells as clicked
+          const word = selected.map(cell => cell.el.textContent).join('');
+          const reverse = selected.map(cell => cell.el.textContent).reverse().join('');
+          const matchedWord = words.find(w => w === word || w === reverse);
+
+          if (matchedWord) {
+            // Mark found in grid
+            selected.forEach(cell => {
+              cell.el.classList.add('found');
+              cell.el.classList.remove('selected');
+            });
+            // Cross off in list
+            highlightWordInList(matchedWord);
+          }
+          selected.forEach(cell => cell.el.classList.remove('selected'));
+          selected = [];
+        }
+      }
+    });
+
+    function highlightWordInList(word) {
+      const items = wordList.querySelectorAll('li');
+      items.forEach(item => {
+        if (item.textContent.trim().toUpperCase() === word) {
+          item.classList.add('found-word');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
