@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -43,6 +43,8 @@
     <li>STRENGTHS</li>
     <li>FEEDBACK</li>
     <li>ENGAGEMENT</li>
+    <li>AUTHENTICITY</li>
+    <li>SELFAWARENESS</li>
     <li>CUSTOMER</li>
     <li>POSITIVE</li>
     <li>REPAIR</li>
@@ -51,6 +53,7 @@
     <li>DOWNTIME</li>
     <li>BOUNDARIES</li>
     <li>SAFETY</li>
+    <li>ACCOUNTABILITY</li>
     <li>ENERGY</li>
   </ul>
 
@@ -75,8 +78,9 @@
     ];
     const words = [
       'WELLBEING','RESILIENCE','TRUST','REST','STRENGTHS','FEEDBACK',
-      'ENGAGEMENT','CUSTOMER','POSITIVE',
-      'REPAIR','MAINTENANCE','ANCHOR','DOWNTIME','BOUNDARIES','SAFETY','ENERGY'
+      'ENGAGEMENT','AUTHENTICITY','SELFAWARENESS','CUSTOMER','POSITIVE',
+      'REPAIR','MAINTENANCE','ANCHOR','DOWNTIME','BOUNDARIES','SAFETY',
+      'ACCOUNTABILITY','ENERGY'
     ];
     const grid = document.getElementById('grid');
     const wordList = document.getElementById('word-list');
@@ -128,7 +132,7 @@
       }
     });
 
-  function highlightWordInList(word) {
+   function highlightWordInList(word) {
   const items = wordList.querySelectorAll('li');
   items.forEach(item => {
     if (item.textContent.trim().replace(/\s+/g, '').toUpperCase() === word.replace(/\s+/g, '').toUpperCase()) {
