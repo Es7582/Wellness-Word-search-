@@ -55,7 +55,7 @@
   </ul>
 
   <script>
-    // Example 15x15 grid (fill with your puzzle's actual letters as needed)
+    // 15x15 grid data
     const gridData = [
       ['W','E','L','L','B','E','I','N','G','Z','R','E','S','T','A'],
       ['O','X','T','R','U','S','T','P','Q','S','E','N','E','R','G'],
@@ -81,61 +81,118 @@
     const grid = document.getElementById('grid');
     const wordList = document.getElementById('word-list');
     let selected = [];
+    let selecting = false;
+    let startCell = null;
 
     // Render grid
-    grid.innerHTML = '';
-    gridData.forEach((row, y) => {
-      const tr = document.createElement('tr');
-      row.forEach((letter, x) => {
-        const td = document.createElement('td');
-        td.textContent = letter;
-        td.dataset.x = x;
-        td.dataset.y = y;
-        tr.appendChild(td);
+    function renderGrid() {
+      grid.innerHTML = '';
+      gridData.forEach((row, y) => {
+        const tr = document.createElement('tr');
+        row.forEach((letter, x) => {
+          const td = document.createElement('td');
+          td.textContent = letter;
+          td.dataset.x = x;
+          td.dataset.y = y;
+          tr.appendChild(td);
+        });
+        grid.appendChild(tr);
       });
-      grid.appendChild(tr);
+    }
+
+    renderGrid();
+
+    function clearSelection() {
+      selected.forEach(cell => cell.el.classList.remove('selected'));
+      selected = [];
+    }
+
+    // Returns array of cell objects if in straight line, else null
+    function getCellsInLine(x1, y1, x2, y2) {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const len = Math.max(Math.abs(dx), Math.abs(dy));
+      if (len === 0) return [getCell(x1, y1)];
+      const stepX = dx === 0 ? 0 : dx / Math.abs(dx);
+      const stepY = dy === 0 ? 0 : dy / Math.abs(dy);
+      // Only horizontal, vertical, or perfect diagonal
+      if (Math.abs(dx) !== 0 && Math.abs(dy) !== 0 && Math.abs(dx) !== Math.abs(dy)) return null;
+      const cells = [];
+      for (let i = 0; i <= len; i++) {
+        const x = x1 + i * stepX;
+        const y = y1 + i * stepY;
+        const el = grid.rows[y]?.cells[x];
+        if (!el) return null;
+        cells.push({x, y, el});
+      }
+      return cells;
+    }
+
+    function getCell(x, y) {
+      const el = grid.rows[y]?.cells[x];
+      return el ? {x, y, el} : null;
+    }
+
+    grid.addEventListener('mousedown', function(e) {
+      if (e.target.tagName === 'TD') {
+        clearSelection();
+        selecting = true;
+        startCell = e.target;
+        startCell.classList.add('selected');
+        selected = [{x: +startCell.dataset.x, y: +startCell.dataset.y, el: startCell}];
+      }
     });
 
-    // Handle cell click
-    grid.addEventListener('click', function(e) {
-      if (e.target.tagName === 'TD') {
-        e.target.classList.toggle('selected');
-        const x = e.target.dataset.x;
-        const y = e.target.dataset.y;
-        const index = selected.findIndex(cell => cell.x === x && cell.y === y);
-        if (index > -1) {
-          selected.splice(index, 1);
-        } else {
-          selected.push({x, y, el: e.target});
-        }
-
-        // Check if selected sequence forms a valid word
-        if (selected.length > 1) {
-          const word = selected.map(cell => cell.el.textContent).join('').toUpperCase();
-          const reverse = selected.map(cell => cell.el.textContent).reverse().join('').toUpperCase();
-          const matchedWord = words.find(w => w === word || w === reverse);
-
-          if (matchedWord) {
-            selected.forEach(cell => {
-              cell.el.classList.add('found');
-              cell.el.classList.remove('selected');
-            });
-            highlightWordInList(matchedWord);
-          }
-          selected.forEach(cell => cell.el.classList.remove('selected'));
-          selected = [];
+    grid.addEventListener('mouseover', function(e) {
+      if (selecting && e.target.tagName === 'TD' && startCell) {
+        clearSelection();
+        const endCell = e.target;
+        const path = getCellsInLine(
+          +startCell.dataset.x, +startCell.dataset.y,
+          +endCell.dataset.x, +endCell.dataset.y
+        );
+        if (path) {
+          selected = path;
+          path.forEach(cell => cell.el.classList.add('selected'));
         }
       }
     });
 
-  function highlightWordInList(word) {
-  const items = wordList.querySelectorAll('li');
-  items.forEach(item => {
-    if (item.textContent.trim().replace(/\s+/g, '').toUpperCase() === word.replace(/\s+/g, '').toUpperCase()) {
-      item.classList.add('found-word');
+    grid.addEventListener('mouseup', function(e) {
+      if (selecting && selected.length > 1) {
+        const word = selected.map(cell => cell.el.textContent).join('').toUpperCase();
+        const reverse = selected.map(cell => cell.el.textContent).reverse().join('').toUpperCase();
+        const matchedWord = words.find(w => w === word || w === reverse);
+
+        if (matchedWord) {
+          selected.forEach(cell => {
+            cell.el.classList.add('found');
+            cell.el.classList.remove('selected');
+          });
+          highlightWordInList(matchedWord);
+        }
+        clearSelection();
+      }
+      selecting = false;
+      startCell = null;
+    });
+
+    document.addEventListener('mouseup', function() {
+      if (selecting) {
+        clearSelection();
+        selecting = false;
+        startCell = null;
+      }
+    });
+
+    function highlightWordInList(word) {
+      const items = wordList.querySelectorAll('li');
+      items.forEach(item => {
+        if (item.textContent.trim().replace(/\s+/g, '').toUpperCase() === word.replace(/\s+/g, '').toUpperCase()) {
+          item.classList.add('found-word');
+        }
+      });
     }
-  });
-}
   </script>
 </body>
 </html>
